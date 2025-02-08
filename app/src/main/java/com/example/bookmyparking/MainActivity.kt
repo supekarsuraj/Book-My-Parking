@@ -1,6 +1,5 @@
 package com.example.bookmyparking
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonSignUp.setOnClickListener {
-//            val intent = Intent(this, SignUpActivity::class.java)
+//            val intent = Intent(this, SignUpActivity::class.java)//new changes
             startActivity(intent)
         }
     }
