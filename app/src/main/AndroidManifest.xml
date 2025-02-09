@@ -17,11 +17,16 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.BookMyParking">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".signloginpage.logIn" android:exported="true"/>
+        <activity android:name=".signloginpage.signIn" android:exported="true"/>
+
+
     </application>
 
 </manifest>
