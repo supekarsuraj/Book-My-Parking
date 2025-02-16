@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39124652878",
+    "project_id": "skin-cleanser-store",
+    "storage_bucket": "skin-cleanser-store.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39124652878:android:fa8ab3549955b6a6cf841f",
+        "android_client_info": {
+          "package_name": "com.example.bookmyparking"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqpD4DFH8x2b1WKo7aXOSTZxBAmPZgPJI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
