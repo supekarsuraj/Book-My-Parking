@@ -1,10 +1,13 @@
 package com.example.bookmyparking.signloginpage
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bookmyparking.Home.homePage
 import com.example.bookmyparking.R
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -44,6 +47,10 @@ class logIn : AppCompatActivity() {
             .addOnSuccessListener { documents ->
                 if (!documents.isEmpty) {
                     Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
+                    Log.i("login","LOGINUSER")
+                    val intent = Intent(this, homePage::class.java)
+                    startActivity(intent)
+                    finish()
                 } else {
                     Toast.makeText(this, "Invalid credentials!", Toast.LENGTH_SHORT).show()
                 }

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/bgImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/homepage_main_image" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000" />
+
+    <ImageView
+        android:id="@+id/menuIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_menu"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/cartPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$0.00"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:paddingEnd="8dp" />
+
+
+
+        <ImageView
+            android:id="@+id/cartIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/bag"
+            android:layout_toEndOf="@id/cartPrice"
+            android:layout_centerVertical="true" />
+        <TextView
+            android:id="@+id/cartCount"
+            android:visibility="gone"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background="@drawable/circle_bg"
+            android:text="0"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_alignEnd="@id/cartIcon"
+            android:layout_alignTop="@id/cartIcon"
+            android:layout_marginEnd="-5dp"
+            android:layout_marginTop="-5dp"
+            android:padding="2dp" />
+    </RelativeLayout>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Flawless"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WELCOME TO FLAWLESS STORE"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp" />
+    <TextView
+        android:id="@+id/mainHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The Best Skin Cleanser for You"
+        android:textSize="26sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_below="@id/subtitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+    <Button
+        android:id="@+id/shopNowBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SHOP NOW"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_border"
+        android:padding="12dp"
+        android:layout_below="@id/mainHeading"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp" />
+
+</RelativeLayout>
