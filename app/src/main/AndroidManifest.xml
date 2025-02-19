@@ -25,6 +25,8 @@
         </activity>
         <activity android:name=".signloginpage.logIn" android:exported="true"/>
         <activity android:name=".signloginpage.signIn" android:exported="true"/>
+        <activity android:name=".Home.homePage" android:exported="true"/>
+
 
 
     </application>
