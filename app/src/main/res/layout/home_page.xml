@@ -133,5 +133,11 @@
         android:layout_marginLeft="30dp"
         android:textSize="18sp" />
 
+    <include
+        layout="@layout/product_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shopNowBtn"/>
+
 
 </RelativeLayout>
