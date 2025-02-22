@@ -7,18 +7,32 @@
         android:id="@+id/tvNewArrivals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Arrivals"
-        android:textSize="24sp"
-        android:textColor="@android:color/black"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:text="New Arrivals"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+    <Button
+        android:id="@+id/shopNowBtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvNewArrivals"
+        android:background="@drawable/pinkbtn_border"
+        android:fontFamily="sans-serif"
+        android:padding="12dp"
+        android:text="SHOP NOW"
+        android:textAllCaps="true"
+        android:textColor="@color/baby_pink"
+        android:layout_marginLeft="120dp"
+        android:textSize="18sp" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvNewArrivals"
+        android:layout_below="@id/shopNowBtn2"
         android:paddingTop="10dp"
         android:clipToPadding="false"
         android:overScrollMode="never"
