@@ -29,5 +29,8 @@ class homePage : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProducts)
         recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columns
         recyclerView.adapter = ProductAdapter(productList)
+
+
+
     }
 }
