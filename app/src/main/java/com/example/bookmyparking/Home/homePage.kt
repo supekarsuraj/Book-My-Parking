@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookmyparking.Adaptar.ProductAdapter
 import com.example.bookmyparking.Product.Product
+import com.example.bookmyparking.followUs.FollowAdapter
+import com.example.bookmyparking.followUs.FollowImage
 import com.example.bookmyparking.reweiwes.Review
 import com.example.bookmyparking.reweiwes.ReviewAdapter
 
@@ -34,15 +36,28 @@ class homePage : AppCompatActivity() {
         recyclerView.adapter = ProductAdapter(productList)
 
         val reviewList = listOf(
-            Review(R.drawable.profile1, "Jennifer Lewis", "Great product, very effective!"),
-            Review(R.drawable.profile2, "Alicia Heart", "Loved the quality and results."),
-            Review(R.drawable.profile3, "Michael James", "Highly recommend to everyone."),
+            Review(R.drawable.profile1, "Jennifer Lewis", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit."),
+            Review(R.drawable.profile2, "Alicia Heart", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit."),
+            Review(R.drawable.profile3, "Michael James", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit."),
         )
 
         // Set up RecyclerView for Reviews
         val recyclerViewReviews: RecyclerView = findViewById(R.id.recyclerViewReviews)
         recyclerViewReviews.layoutManager = LinearLayoutManager(this)
         recyclerViewReviews.adapter = ReviewAdapter(reviewList)
+        val followImages = listOf(
+            FollowImage(R.drawable.follow_img1),
+            FollowImage(R.drawable.follow_img2),
+            FollowImage(R.drawable.follow_img3),
+            FollowImage(R.drawable.follow_img4),
+            FollowImage(R.drawable.follow_img5),
+            FollowImage(R.drawable.follow_img6)
+        )
 
+        // Set up RecyclerView for Follow Images
+        val recyclerViewFollow: RecyclerView = findViewById(R.id.recyclerViewFollowImages)
+        recyclerViewFollow.layoutManager = GridLayoutManager(this, 1) // 2 columns
+        recyclerViewFollow.adapter = FollowAdapter(followImages)
     }
+
 }
