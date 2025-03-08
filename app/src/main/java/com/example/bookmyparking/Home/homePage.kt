@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookmyparking.Adaptar.ProductAdapter
+import com.example.bookmyparking.DeliveryOrder.DeliveryOrder
+import com.example.bookmyparking.DeliveryOrder.OrderFeatureAdapter
 import com.example.bookmyparking.Product.Product
 import com.example.bookmyparking.followUs.FollowAdapter
 import com.example.bookmyparking.followUs.FollowImage
@@ -16,9 +18,7 @@ import com.example.bookmyparking.reweiwes.ReviewAdapter
 class homePage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home_page) // This is your main layout
-
-        // Product list
+        setContentView(R.layout.home_page) 
         val productList = listOf(
             Product(R.drawable.product1_hybrid_cleasing_balm, "Cleanser", "Hybrid Cleansing Balm", 32.90, 4.5f),
             Product(R.drawable.product2_soothing_sunscreen_gel, "Sunscreens", "Soothing Sunscreen Gel", 24.50, 4.0f),
@@ -29,10 +29,8 @@ class homePage : AppCompatActivity() {
             Product(R.drawable.product7_hydrating_gel_oil, "Mask", "Detox Clay Mask", 18.99, 4.3f),
             Product(R.drawable.product8_cleanser_concentrate, "Toner", "Refreshing Face Toner", 16.50, 4.1f)
         )
-
-        // Find RecyclerView from layout
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProducts)
-        recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columns
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.adapter = ProductAdapter(productList)
 
         val reviewList = listOf(
@@ -40,8 +38,6 @@ class homePage : AppCompatActivity() {
             Review(R.drawable.profile2, "Alicia Heart", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit."),
             Review(R.drawable.profile3, "Michael James", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit."),
         )
-
-        // Set up RecyclerView for Reviews
         val recyclerViewReviews: RecyclerView = findViewById(R.id.recyclerViewReviews)
         recyclerViewReviews.layoutManager = LinearLayoutManager(this)
         recyclerViewReviews.adapter = ReviewAdapter(reviewList)
@@ -53,11 +49,20 @@ class homePage : AppCompatActivity() {
             FollowImage(R.drawable.follow_img5),
             FollowImage(R.drawable.follow_img6)
         )
-
-        // Set up RecyclerView for Follow Images
         val recyclerViewFollow: RecyclerView = findViewById(R.id.recyclerViewFollowImages)
-        recyclerViewFollow.layoutManager = GridLayoutManager(this, 1) // 2 columns
+        recyclerViewFollow.layoutManager = GridLayoutManager(this, 1)
         recyclerViewFollow.adapter = FollowAdapter(followImages)
+
+        val orderFeatures = listOf(
+            DeliveryOrder(R.drawable.ic_delivery, "FREE DELIVERY", "Nullam pharetra egestas mollis"),
+            DeliveryOrder(R.drawable.card, "EASY PAYMENT", "Urna est enim pellentesque"),
+            DeliveryOrder(R.drawable.ic_delivery, "TRACK ORDER", "Mauris lacus nunc pellentesque"),
+            DeliveryOrder(R.drawable.question_mark, "HAVE QUESTIONS?", "Vulputate enim quis sollicitudin")
+        )
+
+        val recyclerViewOrders: RecyclerView = findViewById(R.id.recyclerViewOrders)
+        recyclerViewOrders.layoutManager = LinearLayoutManager(this)
+        recyclerViewOrders.adapter = OrderFeatureAdapter(orderFeatures)
     }
 
 }

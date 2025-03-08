@@ -160,6 +160,11 @@
             layout="@layout/public_reviews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <include layout="@layout/follow_us"/>
+        <include layout="@layout/follow_us"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <include layout="@layout/delivery_orders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </ScrollView>
