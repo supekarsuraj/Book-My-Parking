@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
-                android:layout_marginTop="234dp"
+                android:layout_marginTop="290dp"
                 android:fontFamily="sans-serif"
                 android:letterSpacing="0.1"
                 android:text="WELCOME TO FLAWLESS STORE"
@@ -113,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/subtitle"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="18dp"
                 android:fontFamily="sans-serif-condensed"
                 android:letterSpacing="0.05"
                 android:shadowColor="#80000000"
@@ -164,6 +164,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <include layout="@layout/delivery_orders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <include layout="@layout/footer_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="#F8F9FC"> <!-- Light background -->
+
+    <!-- Brand Name -->
+    <TextView
+        android:id="@+id/tvbrandName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Flawless"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:paddingBottom="12dp"/>
+
+    <!-- Navigation Links -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/navhome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/navshop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shop"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray"
+            android:gravity="center"
+            android:paddingBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/navAbout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray"
+            android:gravity="center"
+            android:paddingBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/navContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray"
+            android:gravity="center"
+            android:paddingBottom="12dp"/>
+    </LinearLayout>
+
+    <!-- Social Media Icons -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/iconInstagram"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_instagram"
+            android:layout_margin="8dp"/>
+
+        <ImageView
+            android:id="@+id/iconFacebook"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_facebook"
+            android:layout_margin="8dp"/>
+
+        <ImageView
+            android:id="@+id/iconTwitter"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_twitter"
+            android:layout_margin="8dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvCopyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="© 2025 Skin Cleanser Store. Powered by Skin Cleanser Store."
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray"
+        android:gravity="center"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>
