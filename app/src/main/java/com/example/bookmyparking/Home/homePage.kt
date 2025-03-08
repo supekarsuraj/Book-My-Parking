@@ -4,9 +4,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bookmyparking.R
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookmyparking.Adaptar.ProductAdapter
 import com.example.bookmyparking.Product.Product
+import com.example.bookmyparking.reweiwes.Review
+import com.example.bookmyparking.reweiwes.ReviewAdapter
 
 class homePage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +33,16 @@ class homePage : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columns
         recyclerView.adapter = ProductAdapter(productList)
 
+        val reviewList = listOf(
+            Review(R.drawable.profile1, "Jennifer Lewis", "Great product, very effective!"),
+            Review(R.drawable.profile2, "Alicia Heart", "Loved the quality and results."),
+            Review(R.drawable.profile3, "Michael James", "Highly recommend to everyone."),
+        )
 
+        // Set up RecyclerView for Reviews
+        val recyclerViewReviews: RecyclerView = findViewById(R.id.recyclerViewReviews)
+        recyclerViewReviews.layoutManager = LinearLayoutManager(this)
+        recyclerViewReviews.adapter = ReviewAdapter(reviewList)
 
     }
 }
