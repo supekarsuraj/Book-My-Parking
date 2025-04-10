@@ -1,7 +1,12 @@
 package com.example.bookmyparking.Home
 
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Looper
+import android.widget.Button
+import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.bookmyparking.R
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +19,7 @@ import com.example.bookmyparking.followUs.FollowAdapter
 import com.example.bookmyparking.followUs.FollowImage
 import com.example.bookmyparking.reweiwes.Review
 import com.example.bookmyparking.reweiwes.ReviewAdapter
+import java.util.logging.Handler
 
 class homePage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +69,41 @@ class homePage : AppCompatActivity() {
         val recyclerViewOrders: RecyclerView = findViewById(R.id.recyclerViewOrders)
         recyclerViewOrders.layoutManager = LinearLayoutManager(this)
         recyclerViewOrders.adapter = OrderFeatureAdapter(orderFeatures)
+        val shopNowBtn: Button = findViewById(R.id.shopNowBtn)
+        shopNowBtn.setOnClickListener {
+            val scrollView = findViewById<ScrollView>(R.id.mainScrollView)
+            scrollView?.smoothScrollTo(0, 0)
+
+            // Change font color and background color on click
+            shopNowBtn.setTextColor(Color.parseColor("#FF69B4"))
+            shopNowBtn.setBackgroundColor(Color.WHITE)
+
+            // Optional: Reset after a short delay (if you want it temporary)
+            android.os.Handler(Looper.getMainLooper()).postDelayed({
+                shopNowBtn.setTextColor(Color.WHITE)
+                shopNowBtn.setBackgroundResource(R.drawable.btn_border)
+            }, 2000)
+        }
+
+
+        val shopNowBtn2: Button = findViewById(R.id.shopNowBtn2)
+        shopNowBtn2.setOnClickListener {
+            val scrollView = findViewById<ScrollView>(R.id.mainScrollView)
+            scrollView?.smoothScrollTo(0, 0)
+
+            // Change font color and background color on click
+            shopNowBtn2.setTextColor(Color.WHITE)
+            shopNowBtn2.setBackgroundColor(Color.parseColor("#FF69B4")) // hot pink
+
+            // Optional: Reset after a short delay (if you want it temporary)
+            android.os.Handler(Looper.getMainLooper()).postDelayed({
+                shopNowBtn2.setTextColor(ContextCompat.getColor(this, R.color.baby_pink))
+                shopNowBtn2.setBackgroundResource(R.drawable.pinkbtn_border)
+            }, 2000)
+        }
+
+
     }
+
 
 }
