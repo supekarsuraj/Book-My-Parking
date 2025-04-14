@@ -13,7 +13,7 @@
         android:layout_width="170dp"
         android:layout_height="180dp"
         android:scaleType="centerCrop"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/tvCategory"
