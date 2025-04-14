@@ -3,6 +3,7 @@ package com.example.bookmyparking.Home
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.widget.Button
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
@@ -19,34 +20,50 @@ import com.example.bookmyparking.followUs.FollowAdapter
 import com.example.bookmyparking.followUs.FollowImage
 import com.example.bookmyparking.reweiwes.Review
 import com.example.bookmyparking.reweiwes.ReviewAdapter
-import java.util.logging.Handler
+import com.example.bookmyparking.signloginpage.FirebaseHelper
 
 class homePage : AppCompatActivity() {
+    private val firebaseHelper = FirebaseHelper()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home_page) 
-        val productList = listOf(
-            Product(R.drawable.product1_hybrid_cleasing_balm, "Cleanser", "Hybrid Cleansing Balm", 32.90, 4.5f),
-            Product(R.drawable.product2_soothing_sunscreen_gel, "Sunscreens", "Soothing Sunscreen Gel", 24.50, 4.0f),
-            Product(R.drawable.product3_calm_hydrating_moisturizer, "Body Wash", "Skin Relief Body Wash", 15.00, 3.8f),
-            Product(R.drawable.product4_energizing_marine_lotion, "Moisturizer", "Hydrating Face Cream", 19.99, 4.2f),
-            Product(R.drawable.product5_mekeup_melting_cleanser, "Serum", "Vitamin C Serum", 27.50, 4.7f),
-            Product(R.drawable.product6_balancing_daily_cleanser, "Lotion", "Hydrating Body Lotion", 22.75, 3.9f),
-            Product(R.drawable.product7_hydrating_gel_oil, "Mask", "Detox Clay Mask", 18.99, 4.3f),
-            Product(R.drawable.product8_cleanser_concentrate, "Toner", "Refreshing Face Toner", 16.50, 4.1f)
-        )
+        setContentView(R.layout.home_page)
+
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProducts)
+
+        // Two options - uncomment the one you want to use:
+
+        // OPTION 1: Load products from Firebase
+        firebaseHelper.fetchProductsFromFirestore(recyclerView, this)
+
+        /* OPTION 2: Use hardcoded products (as fallback)
+        val productList = listOf(
+            Product(imageResource = R.drawable.product1_hybrid_cleasing_balm, category = "Cleanser", name = "Hybrid Cleansing Balm", price = 32.90, rating = 4.5f),
+            Product(imageResource = R.drawable.product2_soothing_sunscreen_gel, category = "Sunscreens", name = "Soothing Sunscreen Gel", price = 24.50, rating = 4.0f),
+            Product(imageResource = R.drawable.product3_calm_hydrating_moisturizer, category = "Body Wash", name = "Skin Relief Body Wash", price = 15.00, rating = 3.8f),
+            Product(imageResource = R.drawable.product4_energizing_marine_lotion, category = "Moisturizer", name = "Hydrating Face Cream", price = 19.99, rating = 4.2f),
+            Product(imageResource = R.drawable.product5_mekeup_melting_cleanser, category = "Serum", name = "Vitamin C Serum", price = 27.50, rating = 4.7f),
+            Product(imageResource = R.drawable.product6_balancing_daily_cleanser, category = "Lotion", name = "Hydrating Body Lotion", price = 22.75, rating = 3.9f),
+            Product(imageResource = R.drawable.product7_hydrating_gel_oil, category = "Mask", name = "Detox Clay Mask", price = 18.99, rating = 4.3f),
+            Product(imageResource = R.drawable.product8_cleanser_concentrate, category = "Toner", name = "Refreshing Face Toner", price = 16.50, rating = 4.1f)
+        )
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.adapter = ProductAdapter(productList)
+        */
 
         val reviewList = listOf(
             Review(R.drawable.profile1, "Jennifer Lewis", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit."),
             Review(R.drawable.profile2, "Alicia Heart", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit."),
-            Review(R.drawable.profile3, "Michael James", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit."),
+            Review(R.drawable.profile3, "Michael James", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit.")
         )
+
         val recyclerViewReviews: RecyclerView = findViewById(R.id.recyclerViewReviews)
         recyclerViewReviews.layoutManager = LinearLayoutManager(this)
         recyclerViewReviews.adapter = ReviewAdapter(reviewList)
+
+//
+//        val recyclerViewReviews: RecyclerView = findViewById(R.id.recyclerViewReviews)
+//        recyclerViewReviews.layoutManager = LinearLayoutManager(this)
+//        recyclerViewReviews.adapter = ReviewAdapter(reviewList)
         val followImages = listOf(
             FollowImage(R.drawable.follow_img1),
             FollowImage(R.drawable.follow_img2),
@@ -89,9 +106,59 @@ class homePage : AppCompatActivity() {
                 shopNowBtn2.setBackgroundResource(R.drawable.pinkbtn_border)
             }, 2000)
         }
-
+//        initProductUpload()
+//        firebaseHelper.fetchProductsFromFirestore()
 
     }
+
+
+    fun initProductUpload() {
+        data class Product(
+            val imageResId: Int,
+            val category: String,
+            val name: String,
+            val price: Double,
+            val rating: Float
+        )
+        Log.i("initProductUpload","1")
+
+        val firebaseHelper = FirebaseHelper()
+
+        val productList = listOf(
+            Product(R.drawable.product1_hybrid_cleasing_balm, "Cleanser", "Hybrid Cleansing Balm", 32.90, 4.5f),
+            Product(R.drawable.product2_soothing_sunscreen_gel, "Sunscreens", "Soothing Sunscreen Gel", 24.50, 4.0f),
+            Product(R.drawable.product3_calm_hydrating_moisturizer, "Body Wash", "Skin Relief Body Wash", 15.00, 3.8f),
+            Product(R.drawable.product4_energizing_marine_lotion, "Moisturizer", "Hydrating Face Cream", 19.99, 4.2f),
+            Product(R.drawable.product5_mekeup_melting_cleanser, "Serum", "Vitamin C Serum", 27.50, 4.7f),
+            Product(R.drawable.product6_balancing_daily_cleanser, "Lotion", "Hydrating Body Lotion", 22.75, 3.9f),
+            Product(R.drawable.product7_hydrating_gel_oil, "Mask", "Detox Clay Mask", 18.99, 4.3f),
+            Product(R.drawable.product8_cleanser_concentrate, "Toner", "Refreshing Face Toner", 16.50, 4.1f)
+        )
+        productList.forEachIndexed { index, product ->
+            val fileName = "product_${index + 1}.jpg"
+            val id = (index + 1).toString()
+            val info = "This is a dummy description for ${product.name}. Great for daily skincare."
+
+            firebaseHelper.uploadProduct(
+                context = this,
+                drawableResId = product.imageResId,
+                fileName = fileName,
+                category = product.category,
+                name = product.name,
+                price = product.price,
+                rating = product.rating,
+                id=id.toString(),
+                information=info.toString()
+
+
+
+            )
+        }
+    }
+
+
+
+
 
 
 }

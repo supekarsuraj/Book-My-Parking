@@ -60,13 +60,9 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.0")
-
-    // Firebase Dependencies (Fix Conflict)
-    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")  // Keep only one
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.0")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
-
-    // Jetpack Compose
     implementation("androidx.compose.ui:ui:1.5.1")
     implementation("androidx.compose.material:material:1.5.1")
     implementation("androidx.compose.ui:ui-tooling-preview:1.5.1")

@@ -1,16 +1,14 @@
 package com.example.bookmyparking.Product
 
 data class Product(
-    val image: Int,
-    val category: String,
-    val name: String,
-    val price: Double,
-    val rating: Float
-)
-data class Product1(
-    val name: String,
-    val category: String,
-    val price: Double,
-    val image: Int,
-    val rating: Float
-)
+    var image: String = "",
+    var imageResource: Int = 0,
+    var category: String = "",
+    var name: String = "",
+    var price: Double = 0.0,
+    var rating: Float = 0.0f,
+    var productId: String = "",
+    var productInformation: String = ""
+) {
+    constructor() : this("", 0, "", "", 0.0, 0.0f, "", "")
+}
