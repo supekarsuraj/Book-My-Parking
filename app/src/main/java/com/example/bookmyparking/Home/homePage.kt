@@ -3,6 +3,7 @@ package com.example.bookmyparking.Home
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.widget.Button
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
@@ -19,9 +20,11 @@ import com.example.bookmyparking.followUs.FollowAdapter
 import com.example.bookmyparking.followUs.FollowImage
 import com.example.bookmyparking.reweiwes.Review
 import com.example.bookmyparking.reweiwes.ReviewAdapter
-import java.util.logging.Handler
+import com.example.bookmyparking.signloginpage.FirebaseHelper
 
 class homePage : AppCompatActivity() {
+
+    private val firebaseHelper = FirebaseHelper()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_page) 
@@ -89,9 +92,58 @@ class homePage : AppCompatActivity() {
                 shopNowBtn2.setBackgroundResource(R.drawable.pinkbtn_border)
             }, 2000)
         }
-
+//        initProductUpload()
 
     }
+
+
+    fun initProductUpload() {
+        data class Product(
+            val imageResId: Int,
+            val category: String,
+            val name: String,
+            val price: Double,
+            val rating: Float
+        )
+        Log.i("initProductUpload","1")
+
+        val firebaseHelper = FirebaseHelper()
+
+        val productList = listOf(
+            Product(R.drawable.product1_hybrid_cleasing_balm, "Cleanser", "Hybrid Cleansing Balm", 32.90, 4.5f),
+            Product(R.drawable.product2_soothing_sunscreen_gel, "Sunscreens", "Soothing Sunscreen Gel", 24.50, 4.0f),
+            Product(R.drawable.product3_calm_hydrating_moisturizer, "Body Wash", "Skin Relief Body Wash", 15.00, 3.8f),
+            Product(R.drawable.product4_energizing_marine_lotion, "Moisturizer", "Hydrating Face Cream", 19.99, 4.2f),
+            Product(R.drawable.product5_mekeup_melting_cleanser, "Serum", "Vitamin C Serum", 27.50, 4.7f),
+            Product(R.drawable.product6_balancing_daily_cleanser, "Lotion", "Hydrating Body Lotion", 22.75, 3.9f),
+            Product(R.drawable.product7_hydrating_gel_oil, "Mask", "Detox Clay Mask", 18.99, 4.3f),
+            Product(R.drawable.product8_cleanser_concentrate, "Toner", "Refreshing Face Toner", 16.50, 4.1f)
+        )
+        productList.forEachIndexed { index, product ->
+            val fileName = "product_${index + 1}.jpg"
+            val id = (index + 1).toString()
+            val info = "This is a dummy description for ${product.name}. Great for daily skincare."
+
+            firebaseHelper.uploadProduct(
+                context = this,
+                drawableResId = product.imageResId,
+                fileName = fileName,
+                category = product.category,
+                name = product.name,
+                price = product.price,
+                rating = product.rating,
+                id=id.toString(),
+                information=info.toString()
+
+
+
+            )
+        }
+    }
+
+
+
+
 
 
 }
