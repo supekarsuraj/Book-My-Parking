@@ -37,17 +37,7 @@
                 android:src="@android:drawable/ic_menu_close_clear_cancel"
                 android:contentDescription="Back button" />
 
-            <!-- Customize Button (Optional) -->
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_margin="16dp"
-                android:text="Customize"
-                android:drawableStart="@android:drawable/ic_menu_edit"
-                android:drawablePadding="8dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp" />
+
         </FrameLayout>
 
         <!-- Product Details Container -->
