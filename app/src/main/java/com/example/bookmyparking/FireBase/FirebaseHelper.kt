@@ -100,6 +100,7 @@ class FirebaseHelper {
                 val productList = mutableListOf<Product>()
                 for (document in result) {
                     try {
+                        // Make sure to get the product information for details page
                         val product = Product(
                             image = document.getString("image") ?: "",
                             category = document.getString("category") ?: "",
@@ -107,7 +108,7 @@ class FirebaseHelper {
                             price = document.getDouble("price") ?: 0.0,
                             rating = document.getDouble("rating")?.toFloat() ?: 0.0f,
                             productId = document.getString("productId") ?: "",
-                            productInformation = document.getString("productInformation") ?: ""
+                            productInformation = document.getString("productInformation") ?: "No description available for this product."
                         )
                         productList.add(product)
                     } catch (e: Exception) {
@@ -129,9 +130,6 @@ class FirebaseHelper {
                 Toast.makeText(context, "Failed to load products from database", Toast.LENGTH_SHORT).show()
             }
     }
-
-
-
 
 
 }
