@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bookmyparking.Product.Product
 import com.example.bookmyparking.Product.ProductDetailActivity
 import com.example.bookmyparking.R
+import kotlin.jvm.java
 
 class ProductAdapter(private val productList: List<Product>) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
@@ -35,10 +36,8 @@ class ProductAdapter(private val productList: List<Product>) :
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = productList[position]
 
-        // Check if we have a base64 string or a resource ID
         if (product.image.isNotEmpty()) {
             try {
-                // Decode base64 image string to Bitmap
                 val imageBytes = Base64.decode(product.image, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
                 holder.imgProduct.setImageBitmap(bitmap)

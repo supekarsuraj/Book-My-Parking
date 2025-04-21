@@ -1,11 +1,16 @@
 package com.example.bookmyparking.Home
 
+import android.R.attr.visible
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ScrollView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.bookmyparking.R
@@ -15,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bookmyparking.Adaptar.ProductAdapter
 import com.example.bookmyparking.DeliveryOrder.DeliveryOrder
 import com.example.bookmyparking.DeliveryOrder.OrderFeatureAdapter
+import com.example.bookmyparking.ImportantArrays.ImpArrays
 import com.example.bookmyparking.Product.Product
 import com.example.bookmyparking.followUs.FollowAdapter
 import com.example.bookmyparking.followUs.FollowImage
@@ -106,9 +112,45 @@ class homePage : AppCompatActivity() {
                 shopNowBtn2.setBackgroundResource(R.drawable.pinkbtn_border)
             }, 2000)
         }
-//        initProductUpload()
-//        firebaseHelper.fetchProductsFromFirestore()
 
+        val tvDescription = findViewById<TextView>(R.id.tvDescription)
+        val tvExtra = findViewById<TextView>(R.id.tvExtra)
+
+        val readMoreButton = findViewById<Button>(R.id.Readmore)
+        val readLessButton = findViewById<Button>(R.id.ReadLess)
+
+        tvExtra.visibility = View.GONE
+        readLessButton.visibility = View.GONE
+
+        readMoreButton.setOnClickListener {
+            readMoreButton.setTextColor(Color.WHITE)
+            readMoreButton.setBackgroundColor(Color.parseColor("#FF69B4"))
+            Handler(Looper.getMainLooper()).postDelayed({
+                readMoreButton.setTextColor(ContextCompat.getColor(this, R.color.baby_pink))
+                readMoreButton.setBackgroundResource(R.drawable.pinkbtn_border)
+            }, 1000)
+
+            tvDescription.text = ImpArrays().beutyFlwlessSkin1
+            tvExtra.text = ImpArrays().beutyFlwlessSkin2
+            tvExtra.visibility = View.VISIBLE
+            readMoreButton.visibility = View.GONE
+            readLessButton.visibility = View.VISIBLE
+        }
+
+        readLessButton.setOnClickListener {
+            readLessButton.setTextColor(Color.WHITE)
+            readLessButton.setBackgroundColor(Color.parseColor("#FF69B4"))
+            Handler(Looper.getMainLooper()).postDelayed({
+                readLessButton.setTextColor(ContextCompat.getColor(this, R.color.baby_pink))
+                readLessButton.setBackgroundResource(R.drawable.pinkbtn_border)
+            }, 1000)
+            tvExtra.visibility = View.GONE
+            tvDescription.text = ImpArrays().beutyFlwlessSkin1
+            readMoreButton.visibility = View.VISIBLE
+            readLessButton.visibility = View.GONE
+        }
+
+//        initProductUpload()
     }
 
 
@@ -120,10 +162,7 @@ class homePage : AppCompatActivity() {
             val price: Double,
             val rating: Float
         )
-        Log.i("initProductUpload","1")
-
         val firebaseHelper = FirebaseHelper()
-
         val productList = listOf(
             Product(R.drawable.product1_hybrid_cleasing_balm, "Cleanser", "Hybrid Cleansing Balm", 32.90, 4.5f),
             Product(R.drawable.product2_soothing_sunscreen_gel, "Sunscreens", "Soothing Sunscreen Gel", 24.50, 4.0f),
@@ -149,8 +188,6 @@ class homePage : AppCompatActivity() {
                 rating = product.rating,
                 id=id.toString(),
                 information=info.toString()
-
-
 
             )
         }

@@ -66,31 +66,6 @@ class FirebaseHelper {
             }
     }
 
-//    fun fetchProductsFromFirestore() {
-//
-//
-//        val db = FirebaseFirestore.getInstance()
-//        db.collection("products")
-//            .get()
-//            .addOnSuccessListener { result ->
-//                val productList = mutableListOf<Product>()
-//                for (document in result) {
-//                    try {
-//                        val product = document.toObject(Product::class.java)
-//                        productList.add(product)
-//                    } catch (e: Exception) {
-//                        Log.e("FirebaseFetch", "Error converting document: ${e.message}")
-//                    }
-//                }
-//
-//                Log.i("fetchProductsFromFirestore", "Fetched products = ${productList[0]}")
-//
-//                // Use the list somewhere, like sending to adapter
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.e("FirebaseFetch", "Firestore fetch failed: ${exception.message}")
-//            }
-//    }
 
     fun fetchProductsFromFirestore(recyclerView: RecyclerView, context: Context) {
         val db = FirebaseFirestore.getInstance()
@@ -100,7 +75,6 @@ class FirebaseHelper {
                 val productList = mutableListOf<Product>()
                 for (document in result) {
                     try {
-                        // Make sure to get the product information for details page
                         val product = Product(
                             image = document.getString("image") ?: "",
                             category = document.getString("category") ?: "",
@@ -117,7 +91,6 @@ class FirebaseHelper {
                 }
 
                 if (productList.isNotEmpty()) {
-                    // Update the RecyclerView with the fetched products
                     recyclerView.layoutManager = GridLayoutManager(context, 2)
                     recyclerView.adapter = ProductAdapter(productList)
                     Log.i("FirebaseFetch", "Successfully loaded ${productList.size} products")
