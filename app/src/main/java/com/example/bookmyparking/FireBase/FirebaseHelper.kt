@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookmyparking.Adaptar.ProductAdapter
 import com.example.bookmyparking.Product.Product
-import com.example.bookmyparking.R
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 
 class FirebaseHelper {
@@ -30,6 +28,7 @@ class FirebaseHelper {
                 callback(false)
             }
     }
+
     fun uploadProduct(
         context: Context,
         drawableResId: Int,
@@ -66,8 +65,35 @@ class FirebaseHelper {
             }
     }
 
-
+    // Legacy method for backwards compatibility - redirect to callback version
     fun fetchProductsFromFirestore(recyclerView: RecyclerView, context: Context) {
+        fetchProductsFromFirestore(object : ProductsCallback {
+            override fun onProductsLoaded(products: List<Product>) {
+                if (products.isNotEmpty()) {
+                    recyclerView.layoutManager = GridLayoutManager(context, 2)
+                    recyclerView.adapter = ProductAdapter(products)
+                    Log.i("FirebaseFetch", "Successfully loaded ${products.size} products")
+                } else {
+                    Log.w("FirebaseFetch", "No products found in Firestore")
+                    Toast.makeText(context, "No products found", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onError(message: String) {
+                Log.e("FirebaseFetch", "Firestore fetch failed: $message")
+                Toast.makeText(context, "Failed to load products from database", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    // Interface for ProductsCallback
+    interface ProductsCallback {
+        fun onProductsLoaded(products: List<Product>)
+        fun onError(message: String)
+    }
+
+    // Method to fetch products using callback
+    fun fetchProductsFromFirestore(callback: ProductsCallback) {
         val db = FirebaseFirestore.getInstance()
         db.collection("products")
             .get()
@@ -91,21 +117,16 @@ class FirebaseHelper {
                 }
 
                 if (productList.isNotEmpty()) {
-                    recyclerView.layoutManager = GridLayoutManager(context, 2)
-                    recyclerView.adapter = ProductAdapter(productList)
                     Log.i("FirebaseFetch", "Successfully loaded ${productList.size} products")
+                    callback.onProductsLoaded(productList)
                 } else {
                     Log.w("FirebaseFetch", "No products found in Firestore")
+                    callback.onProductsLoaded(emptyList())
                 }
             }
             .addOnFailureListener { exception ->
                 Log.e("FirebaseFetch", "Firestore fetch failed: ${exception.message}")
-                Toast.makeText(context, "Failed to load products from database", Toast.LENGTH_SHORT).show()
+                callback.onError("Failed to load products: ${exception.message}")
             }
     }
-
-
 }
-
-
-

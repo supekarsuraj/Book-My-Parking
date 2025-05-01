@@ -1,5 +1,6 @@
 package com.example.bookmyparking.Home
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -19,9 +20,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bookmyparking.Adaptar.ProductAdapter
 import com.example.bookmyparking.DeliveryOrder.DeliveryOrder
 import com.example.bookmyparking.DeliveryOrder.OrderFeatureAdapter
 import com.example.bookmyparking.ImportantArrays.ImpArrays
+import com.example.bookmyparking.Product.Product
+import com.example.bookmyparking.Product.ShopAllActivity
 import com.example.bookmyparking.R
 import com.example.bookmyparking.followUs.FollowAdapter
 import com.example.bookmyparking.followUs.FollowImage
@@ -67,8 +71,21 @@ class homePage : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProducts)
 
-        // Load products from Firebase
-        firebaseHelper.fetchProductsFromFirestore(recyclerView, this)
+        // Load products from Firebase using callback version for homepage
+        firebaseHelper.fetchProductsFromFirestore(object : FirebaseHelper.ProductsCallback {
+            override fun onProductsLoaded(products: List<Product>) {
+                if (products.isNotEmpty()) {
+                    recyclerView.layoutManager = GridLayoutManager(this@homePage, 2)
+                    recyclerView.adapter = ProductAdapter(products)
+                } else {
+                    Toast.makeText(this@homePage, "No products found", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onError(message: String) {
+                Toast.makeText(this@homePage, "Error: $message", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         val reviewList = listOf(
             Review(R.drawable.profile1, "Jennifer Lewis", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit."),
@@ -174,7 +191,8 @@ class homePage : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             R.id.nav_shop -> {
                 Toast.makeText(this, "Shop All Selected", Toast.LENGTH_SHORT).show()
                 // Navigate to shop all products screen
-                // Intent code here
+                val intent = Intent(this, ShopAllActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_categories -> {
                 Toast.makeText(this, "Categories Selected", Toast.LENGTH_SHORT).show()
