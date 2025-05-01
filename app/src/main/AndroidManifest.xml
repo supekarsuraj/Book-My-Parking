@@ -32,6 +32,11 @@
             android:name=".Product.ProductDetailActivity"
             android:exported="false" />
 
+        <activity android:name=".Product.ShopAllActivity" android:exported="true"/>
+
+
+
+
 
 
     </application>
