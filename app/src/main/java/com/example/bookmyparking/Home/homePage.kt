@@ -1,60 +1,74 @@
 package com.example.bookmyparking.Home
 
-import android.R.attr.visible
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.bookmyparking.R
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bookmyparking.Adaptar.ProductAdapter
 import com.example.bookmyparking.DeliveryOrder.DeliveryOrder
 import com.example.bookmyparking.DeliveryOrder.OrderFeatureAdapter
 import com.example.bookmyparking.ImportantArrays.ImpArrays
-import com.example.bookmyparking.Product.Product
+import com.example.bookmyparking.R
 import com.example.bookmyparking.followUs.FollowAdapter
 import com.example.bookmyparking.followUs.FollowImage
 import com.example.bookmyparking.reweiwes.Review
 import com.example.bookmyparking.reweiwes.ReviewAdapter
 import com.example.bookmyparking.signloginpage.FirebaseHelper
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 
-class homePage : AppCompatActivity() {
+class homePage : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val firebaseHelper = FirebaseHelper()
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var menuIcon: ImageView
+    private lateinit var toggle: ActionBarDrawerToggle
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home_page)
+        setContentView(R.layout.navigation_drawer_layout)
+
+        // Initialize drawer layout and navigation view
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigationView)
+        navigationView.setNavigationItemSelectedListener(this)
+
+        // Get user email if logged in
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val headerView = navigationView.getHeaderView(0)
+            val userEmailTextView = headerView.findViewById<TextView>(R.id.tvUserEmail)
+            userEmailTextView.text = currentUser.email
+        }
+
+        // Setup drawer toggle
+        menuIcon = findViewById(R.id.menuIcon)
+        menuIcon.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProducts)
 
-        // Two options - uncomment the one you want to use:
-
-        // OPTION 1: Load products from Firebase
+        // Load products from Firebase
         firebaseHelper.fetchProductsFromFirestore(recyclerView, this)
-
-        /* OPTION 2: Use hardcoded products (as fallback)
-        val productList = listOf(
-            Product(imageResource = R.drawable.product1_hybrid_cleasing_balm, category = "Cleanser", name = "Hybrid Cleansing Balm", price = 32.90, rating = 4.5f),
-            Product(imageResource = R.drawable.product2_soothing_sunscreen_gel, category = "Sunscreens", name = "Soothing Sunscreen Gel", price = 24.50, rating = 4.0f),
-            Product(imageResource = R.drawable.product3_calm_hydrating_moisturizer, category = "Body Wash", name = "Skin Relief Body Wash", price = 15.00, rating = 3.8f),
-            Product(imageResource = R.drawable.product4_energizing_marine_lotion, category = "Moisturizer", name = "Hydrating Face Cream", price = 19.99, rating = 4.2f),
-            Product(imageResource = R.drawable.product5_mekeup_melting_cleanser, category = "Serum", name = "Vitamin C Serum", price = 27.50, rating = 4.7f),
-            Product(imageResource = R.drawable.product6_balancing_daily_cleanser, category = "Lotion", name = "Hydrating Body Lotion", price = 22.75, rating = 3.9f),
-            Product(imageResource = R.drawable.product7_hydrating_gel_oil, category = "Mask", name = "Detox Clay Mask", price = 18.99, rating = 4.3f),
-            Product(imageResource = R.drawable.product8_cleanser_concentrate, category = "Toner", name = "Refreshing Face Toner", price = 16.50, rating = 4.1f)
-        )
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
-        recyclerView.adapter = ProductAdapter(productList)
-        */
 
         val reviewList = listOf(
             Review(R.drawable.profile1, "Jennifer Lewis", "Sed odio donec curabitur auctor amet tincidunt non odio enim felis tincidunt amet morbi egestas hendrerit."),
@@ -66,10 +80,6 @@ class homePage : AppCompatActivity() {
         recyclerViewReviews.layoutManager = LinearLayoutManager(this)
         recyclerViewReviews.adapter = ReviewAdapter(reviewList)
 
-//
-//        val recyclerViewReviews: RecyclerView = findViewById(R.id.recyclerViewReviews)
-//        recyclerViewReviews.layoutManager = LinearLayoutManager(this)
-//        recyclerViewReviews.adapter = ReviewAdapter(reviewList)
         val followImages = listOf(
             FollowImage(R.drawable.follow_img1),
             FollowImage(R.drawable.follow_img2),
@@ -81,6 +91,7 @@ class homePage : AppCompatActivity() {
         val recyclerViewFollow: RecyclerView = findViewById(R.id.recyclerViewFollowImages)
         recyclerViewFollow.layoutManager = GridLayoutManager(this, 1)
         recyclerViewFollow.adapter = FollowAdapter(followImages)
+
         val orderFeatures = listOf(
             DeliveryOrder(R.drawable.ic_delivery, "FREE DELIVERY", "Nullam pharetra egestas mollis"),
             DeliveryOrder(R.drawable.card, "EASY PAYMENT", "Urna est enim pellentesque"),
@@ -90,24 +101,26 @@ class homePage : AppCompatActivity() {
         val recyclerViewOrders: RecyclerView = findViewById(R.id.recyclerViewOrders)
         recyclerViewOrders.layoutManager = LinearLayoutManager(this)
         recyclerViewOrders.adapter = OrderFeatureAdapter(orderFeatures)
+
         val shopNowBtn: Button = findViewById(R.id.shopNowBtn)
         shopNowBtn.setOnClickListener {
             val scrollView = findViewById<ScrollView>(R.id.mainScrollView)
             scrollView?.smoothScrollTo(0, 0)
             shopNowBtn.setTextColor(Color.parseColor("#FF69B4"))
             shopNowBtn.setBackgroundColor(Color.WHITE)
-            android.os.Handler(Looper.getMainLooper()).postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 shopNowBtn.setTextColor(Color.WHITE)
                 shopNowBtn.setBackgroundResource(R.drawable.btn_border)
             }, 2000)
         }
+
         val shopNowBtn2: Button = findViewById(R.id.shopNowBtn2)
         shopNowBtn2.setOnClickListener {
             val scrollView = findViewById<ScrollView>(R.id.mainScrollView)
             scrollView?.smoothScrollTo(0, 0)
             shopNowBtn2.setTextColor(Color.WHITE)
             shopNowBtn2.setBackgroundColor(Color.parseColor("#FF69B4"))
-            android.os.Handler(Looper.getMainLooper()).postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 shopNowBtn2.setTextColor(ContextCompat.getColor(this, R.color.baby_pink))
                 shopNowBtn2.setBackgroundResource(R.drawable.pinkbtn_border)
             }, 2000)
@@ -149,10 +162,90 @@ class homePage : AppCompatActivity() {
             readMoreButton.visibility = View.VISIBLE
             readLessButton.visibility = View.GONE
         }
-
-//        initProductUpload()
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        // Handle navigation view item clicks here
+        when (item.itemId) {
+            R.id.nav_home -> {
+                // Stay on current page, just close drawer
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+            R.id.nav_shop -> {
+                Toast.makeText(this, "Shop All Selected", Toast.LENGTH_SHORT).show()
+                // Navigate to shop all products screen
+                // Intent code here
+            }
+            R.id.nav_categories -> {
+                Toast.makeText(this, "Categories Selected", Toast.LENGTH_SHORT).show()
+                // Navigate to categories screen
+                // Intent code here
+            }
+            R.id.nav_wishlist -> {
+                Toast.makeText(this, "Wishlist Selected", Toast.LENGTH_SHORT).show()
+                // Navigate to wishlist screen
+                // Intent code here
+            }
+            R.id.nav_cart -> {
+                Toast.makeText(this, "Cart Selected", Toast.LENGTH_SHORT).show()
+                // Navigate to cart screen
+                // Intent code here
+            }
+            R.id.nav_profile -> {
+                Toast.makeText(this, "Profile Selected", Toast.LENGTH_SHORT).show()
+                // Navigate to profile screen
+                // Intent code here
+            }
+            R.id.nav_orders -> {
+                Toast.makeText(this, "My Orders Selected", Toast.LENGTH_SHORT).show()
+                // Navigate to orders screen
+                // Intent code here
+            }
+            R.id.nav_address -> {
+                Toast.makeText(this, "My Addresses Selected", Toast.LENGTH_SHORT).show()
+                // Navigate to addresses screen
+                // Intent code here
+            }
+            R.id.nav_contact -> {
+                Toast.makeText(this, "Contact Us Selected", Toast.LENGTH_SHORT).show()
+                // Navigate to contact screen
+                // Intent code here
+            }
+            R.id.nav_about -> {
+                Toast.makeText(this, "About Us Selected", Toast.LENGTH_SHORT).show()
+                // Navigate to about screen
+                // Intent code here
+            }
+            R.id.nav_settings -> {
+                Toast.makeText(this, "Settings Selected", Toast.LENGTH_SHORT).show()
+                // Navigate to settings screen
+                // Intent code here
+            }
+            R.id.nav_logout -> {
+                // Handle logout
+                FirebaseAuth.getInstance().signOut()
+                Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
+
+                // Navigate to login screen (replace with your login activity)
+                // val intent = Intent(this, LoginActivity::class.java)
+                // intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                // startActivity(intent)
+                // finish()
+            }
+        }
+
+        // Close the drawer
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
 
     fun initProductUpload() {
         data class Product(
@@ -188,14 +281,7 @@ class homePage : AppCompatActivity() {
                 rating = product.rating,
                 id=id.toString(),
                 information=info.toString()
-
             )
         }
     }
-
-
-
-
-
-
 }
