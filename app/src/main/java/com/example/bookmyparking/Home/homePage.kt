@@ -20,7 +20,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bookmyparking.About.AboutActivity
 import com.example.bookmyparking.Adaptar.ProductAdapter
+import com.example.bookmyparking.Contact.ContactActivity
 import com.example.bookmyparking.DeliveryOrder.DeliveryOrder
 import com.example.bookmyparking.DeliveryOrder.OrderFeatureAdapter
 import com.example.bookmyparking.ImportantArrays.ImpArrays
@@ -45,21 +47,15 @@ class homePage : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.navigation_drawer_layout)
-
-        // Initialize drawer layout and navigation view
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigationView)
         navigationView.setNavigationItemSelectedListener(this)
-
-        // Get user email if logged in
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             val headerView = navigationView.getHeaderView(0)
             val userEmailTextView = headerView.findViewById<TextView>(R.id.tvUserEmail)
             userEmailTextView.text = currentUser.email
         }
-
-        // Setup drawer toggle
         menuIcon = findViewById(R.id.menuIcon)
         menuIcon.setOnClickListener {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -70,8 +66,6 @@ class homePage : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProducts)
-
-        // Load products from Firebase using callback version for homepage
         firebaseHelper.fetchProductsFromFirestore(object : FirebaseHelper.ProductsCallback {
             override fun onProductsLoaded(products: List<Product>) {
                 if (products.isNotEmpty()) {
@@ -182,65 +176,48 @@ class homePage : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here
         when (item.itemId) {
             R.id.nav_home -> {
-                // Stay on current page, just close drawer
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             R.id.nav_shop -> {
                 Toast.makeText(this, "Shop All Selected", Toast.LENGTH_SHORT).show()
-                // Navigate to shop all products screen
                 val intent = Intent(this, ShopAllActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_categories -> {
                 Toast.makeText(this, "Categories Selected", Toast.LENGTH_SHORT).show()
-                // Navigate to categories screen
-                // Intent code here
             }
             R.id.nav_wishlist -> {
                 Toast.makeText(this, "Wishlist Selected", Toast.LENGTH_SHORT).show()
-                // Navigate to wishlist screen
-                // Intent code here
             }
             R.id.nav_cart -> {
                 Toast.makeText(this, "Cart Selected", Toast.LENGTH_SHORT).show()
-                // Navigate to cart screen
-                // Intent code here
             }
             R.id.nav_profile -> {
                 Toast.makeText(this, "Profile Selected", Toast.LENGTH_SHORT).show()
-                // Navigate to profile screen
-                // Intent code here
             }
             R.id.nav_orders -> {
                 Toast.makeText(this, "My Orders Selected", Toast.LENGTH_SHORT).show()
-                // Navigate to orders screen
-                // Intent code here
             }
             R.id.nav_address -> {
                 Toast.makeText(this, "My Addresses Selected", Toast.LENGTH_SHORT).show()
-                // Navigate to addresses screen
-                // Intent code here
             }
             R.id.nav_contact -> {
+                val intent = Intent(this, ContactActivity::class.java)
+                startActivity(intent)
+                finish()
                 Toast.makeText(this, "Contact Us Selected", Toast.LENGTH_SHORT).show()
-                // Navigate to contact screen
-                // Intent code here
             }
             R.id.nav_about -> {
-                Toast.makeText(this, "About Us Selected", Toast.LENGTH_SHORT).show()
-                // Navigate to about screen
-                // Intent code here
+                // Navigate to About Us Activity
+                val intent = Intent(this, AboutActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_settings -> {
                 Toast.makeText(this, "Settings Selected", Toast.LENGTH_SHORT).show()
-                // Navigate to settings screen
-                // Intent code here
             }
             R.id.nav_logout -> {
-                // Handle logout
                 FirebaseAuth.getInstance().signOut()
                 Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
 
@@ -252,7 +229,6 @@ class homePage : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             }
         }
 
-        // Close the drawer
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }

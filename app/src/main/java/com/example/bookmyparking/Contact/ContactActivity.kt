@@ -1,50 +1,63 @@
-package com.example.bookmyparking.Product
+package com.example.bookmyparking.Contact
+
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.bookmyparking.About.AboutActivity
-import com.example.bookmyparking.Adaptar.ProductAdapter
 import com.example.bookmyparking.Home.homePage
+import com.example.bookmyparking.Product.ShopAllActivity
 import com.example.bookmyparking.R
-import com.example.bookmyparking.signloginpage.FirebaseHelper
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
-class ShopAllActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private val firebaseHelper = FirebaseHelper()
+class ContactActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var menuIcon: ImageView
-    private lateinit var recyclerViewProducts: RecyclerView
-    private lateinit var loadingIndicator: ProgressBar
-    private lateinit var emptyState: LinearLayout
-    private lateinit var productCount: TextView
+
+    private lateinit var nameEditText: EditText
+    private lateinit var emailEditText: EditText
+    private lateinit var phoneEditText: EditText
+    private lateinit var messageEditText: EditText
+    private lateinit var submitButton: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("ShopAllActivity","ShopAllActivity")
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.shop_all_screen)
+        setContentView(R.layout.activity_contact)
+Log.i("ContactActivity","ContactActivity1")
+//        Log.i("ShopAllActivity","ShopAllActivity")
+
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigationView)
         navigationView.setNavigationItemSelectedListener(this)
+        Log.i("ContactActivity","ContactActivity2")
+
+        nameEditText = findViewById(R.id.editTextName)
+        emailEditText = findViewById(R.id.editTextEmail)
+        phoneEditText = findViewById(R.id.editTextPhone)
+        messageEditText = findViewById(R.id.editTextMessage)
+        submitButton = findViewById(R.id.buttonSubmit)
+
+        Log.i("ContactActivity","ContactActivity3")
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val headerView = navigationView.getHeaderView(0)
+            val userEmailTextView = headerView.findViewById<TextView>(R.id.tvUserEmail)
+            userEmailTextView.text = currentUser.email
+        }
+
+        Log.i("ContactActivity","ContactActivity4")
         menuIcon = findViewById(R.id.menuIcon)
-        recyclerViewProducts = findViewById(R.id.recyclerViewAllProducts)
-        loadingIndicator = findViewById(R.id.loadingIndicator)
-        emptyState = findViewById(R.id.emptyState)
-        productCount = findViewById(R.id.productCount)
-        val headerTitle = findViewById<TextView>(R.id.headerTitle)
-        headerTitle.text = "Flawless"
         menuIcon.setOnClickListener {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 drawerLayout.closeDrawer(GravityCompat.START)
@@ -52,45 +65,59 @@ class ShopAllActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 drawerLayout.openDrawer(GravityCompat.START)
             }
         }
+
+        Log.i("ContactActivity","ContactActivity5")
+        val headerTitle = findViewById<TextView>(R.id.headerTitle)
+        headerTitle.text = "Contact Us"
+
+        // Setup cart icon
         val cartIcon = findViewById<ImageView>(R.id.cartIcon)
         cartIcon.setOnClickListener {
-            Toast.makeText(this, "Cart clicked", Toast.LENGTH_SHORT).show() }
-        val filterIcon = findViewById<ImageView>(R.id.filterIcon)
-        filterIcon.setOnClickListener {
-            Toast.makeText(this, "Filter options", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Cart clicked", Toast.LENGTH_SHORT).show()
         }
-        recyclerViewProducts.layoutManager = GridLayoutManager(this, 2)
-        loadingIndicator.visibility = View.VISIBLE
-        recyclerViewProducts.visibility = View.GONE
-        emptyState.visibility = View.GONE
-        loadAllProducts()
+
+        // Setup form submission
+        submitButton.setOnClickListener {
+            if (validateForm()) {
+                // Here you would typically send the form data to your backend
+                Toast.makeText(this, "Message sent successfully!", Toast.LENGTH_SHORT).show()
+                clearForm()
+            }
+        }
     }
 
-    private fun loadAllProducts() {
-        firebaseHelper.fetchProductsFromFirestore(object : FirebaseHelper.ProductsCallback {
-            override fun onProductsLoaded(products: List<Product>) {
-                loadingIndicator.visibility = View.GONE
+    private fun validateForm(): Boolean {
+        var isValid = true
 
-                if (products.isEmpty()) {
-                    recyclerViewProducts.visibility = View.GONE
-                    emptyState.visibility = View.VISIBLE
-                    productCount.text = "No products found"
-                } else {
-                    recyclerViewProducts.visibility = View.VISIBLE
-                    emptyState.visibility = View.GONE
-                    productCount.text = "Showing ${products.size} products"
-                    recyclerViewProducts.adapter = ProductAdapter(products)
-                }
-            }
+        if (nameEditText.text.toString().trim().isEmpty()) {
+            nameEditText.error = "Name is required"
+            isValid = false
+        }
 
-            override fun onError(message: String) {
-                loadingIndicator.visibility = View.GONE
-                recyclerViewProducts.visibility = View.GONE
-                emptyState.visibility = View.VISIBLE
-                Toast.makeText(this@ShopAllActivity, "Error: $message", Toast.LENGTH_SHORT).show()
-            }
-        })
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+        if (emailEditText.text.toString().trim().isEmpty()) {
+            emailEditText.error = "Email is required"
+            isValid = false
+        } else if (!emailEditText.text.toString().trim().matches(emailPattern.toRegex())) {
+            emailEditText.error = "Enter a valid email address"
+            isValid = false
+        }
+
+        if (messageEditText.text.toString().trim().isEmpty()) {
+            messageEditText.error = "Message is required"
+            isValid = false
+        }
+
+        return isValid
     }
+
+    private fun clearForm() {
+        nameEditText.text.clear()
+        emailEditText.text.clear()
+        phoneEditText.text.clear()
+        messageEditText.text.clear()
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_home -> {
@@ -99,7 +126,9 @@ class ShopAllActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 finish()
             }
             R.id.nav_shop -> {
-                drawerLayout.closeDrawer(GravityCompat.START)
+                val intent = Intent(this, ShopAllActivity::class.java)
+                startActivity(intent)
+                finish()
             }
             R.id.nav_categories -> {
                 Toast.makeText(this, "Categories Selected", Toast.LENGTH_SHORT).show()
@@ -120,10 +149,10 @@ class ShopAllActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 Toast.makeText(this, "My Addresses Selected", Toast.LENGTH_SHORT).show()
             }
             R.id.nav_contact -> {
-                Toast.makeText(this, "Contact Us Selected", Toast.LENGTH_SHORT).show()
+                // Already on Contact page, just close drawer
+                drawerLayout.closeDrawer(GravityCompat.START)
             }
             R.id.nav_about -> {
-                Toast.makeText(this, "About Us Selected", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, AboutActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -134,7 +163,6 @@ class ShopAllActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
             R.id.nav_logout -> {
                 FirebaseAuth.getInstance().signOut()
                 Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
-
                 // Navigate to login screen (replace with your login activity)
                 // val intent = Intent(this, LoginActivity::class.java)
                 // intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -142,6 +170,7 @@ class ShopAllActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 // finish()
             }
         }
+
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
