@@ -33,6 +33,10 @@
             android:exported="false" />
 
         <activity android:name=".Product.ShopAllActivity" android:exported="true"/>
+        <activity android:name=".About.AboutActivity" android:exported="true"/>
+        <activity
+            android:name=".Contact.ContactActivity"
+            android:exported="false" />
 
 
 
